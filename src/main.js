@@ -69,12 +69,12 @@ function SliderJS(sliderID, arguments){
         }
         
     })
-    console.log('1')
+    
     window.addEventListener('mousedown', gestureStart)
     window.addEventListener('mousemove', gestureMove)
     window.addEventListener('mouseup', gestureEnd)
     
-    console.log('2');
+    
     window.addEventListener('touchstart', gestureStart)
     window.addEventListener('touchmove', gestureMove)
     window.addEventListener('touchend', gestureEnd)
@@ -110,9 +110,7 @@ function playShow() {
 }
 
 function gestureStart(event){
-    console.log('3');
     
-    initialPosition = event.pageX
     initialPosition = event.pageX
     console.log(initialPosition);
     moving = true
@@ -129,7 +127,6 @@ function gestureStart(event){
 
 function gestureMove(event){
     if (moving){
-        console.log('4');
         const currentPosition = event.pageX
         console.log(currentPosition);
         const difference = currentPosition - initialPosition
@@ -139,7 +136,6 @@ function gestureMove(event){
 }
 
 function gestureEnd(event){
-    console.log('5');
     moving = false
     initialPosition = 0
     
