@@ -1,29 +1,39 @@
 function SliderJS(sliderID, arguments){
     console.log('function');
+    let prevButton = document.createElement("button");
+    prevButton.innerText = '<';
+    document.body.appendChild(prevButton);
+    let playButton = document.createElement("button");
+    playButton.innerText = '||';
+    document.body.appendChild(playButton);
+    let nextButton = document.createElement("button");
+    nextButton.innerText = '>';
+    document.body.appendChild(nextButton);
     let carouselSliders = document.querySelector(sliderID)
     let slidersImg = document.querySelectorAll(sliderID +' img')
-    const prevButton = document.querySelector('#prev')
-    const nextButton = document.querySelector('#next')
-    const playButton = document.querySelector('#swipe')
     let size = slidersImg[0].clientWidth
     let obj = arguments
     let counter = 0
-
+    
+    
     if (obj.hideControls === false) {
         prevButton.style.display = 'none'
         nextButton.style.display = 'none'
-        swipeButton.style.display = 'none'
+        playButton.style.display = 'none'
     }
-   prevButton.addEventListener('click', ()=>{
+    
+    prevButton.addEventListener('click', ()=>{
         console.log('prevButton');
         if(counter <= 0){
-            console.log('first image');
+            slidersImg[counter].style.display = 'none'
             counter = slidersImg.length - 1
-            console.log(counter);
-            carouselSliders.style.transform = 'translateX(' + (-size * counter) + 'px)'
+            slidersImg[counter].style.display = 'block'
+            return
         } 
+        slidersImg[counter].style.display = 'none'
         counter--
-        carouselSliders.style.transform = 'translateX(' + (-size * counter) + 'px)' 
+        slidersImg[counter].style.display = 'block'
+        
         
         
     })
@@ -34,13 +44,13 @@ function SliderJS(sliderID, arguments){
     nextButton.addEventListener('click', ()=>{
         console.log('nextButton');
         if(counter >= slidersImg.length - 1){
-            console.log('last image');
+            slidersImg[counter].style.display = 'none'
             counter = 0
-            console.log(counter);
-            carouselSliders.style.transform = 'translateX(' + (-size * counter) + 'px)'
+            slidersImg[counter].style.display = 'block'
             return
         }
+        slidersImg[counter].style.display = 'none'
         counter++
-        carouselSliders.style.transform = 'translateX(' + (-size * counter) + 'px)'
+        slidersImg[counter].style.display = 'block'
     })
 }
