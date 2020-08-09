@@ -3,24 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
     <title>Slider</title>
 </head>
 <body>
+    <script src="main.js"></script>
+    <script >
+        document.addEventListener("DOMContentLoaded", function(event) {
+        var slider1 = new SliderJS('#sliders',
+            {
+            playing: true,
+            autoplayInterval: 2000,
+            hideControls: true
+            });
+        });
+    </script>
         <div id="sliders">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Black_white_cats.jpg/800px-Black_white_cats.jpg" alt="">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Leopardus_tigrinus_-_Parc_des_F%C3%A9lins.jpg/800px-Leopardus_tigrinus_-_Parc_des_F%C3%A9lins.jpg" alt="">
             <img src="https://img11.postila.ru/data/28/09/34/72/28093472c60d3a8808b8a82a1611353a3283a609e16a8d5b4ab3452db5f6c62b.jpg" alt="">
+            <img src="https://legkovmeste.ru/wp-content/uploads/2019/02/post_5c180ea8b8e48.jpg" alt="">
         </div>
     
-    <script src="src/main.js">
-        document.addEventListener("DOMContentLoaded", function(event) {
-      var slider1 = new SliderJS('#sliders',
-        {
-          playing: true,
-          autoplayInterval: 2000,
-          hideControls: true
-        });
-    });
-    </script>    
 </body>
 </html>

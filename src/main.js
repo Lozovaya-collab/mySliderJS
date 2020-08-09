@@ -14,14 +14,13 @@ function SliderJS(sliderID, arguments){
         nextButton.style.display = 'none'
         swipeButton.style.display = 'none'
     }
-    prevButton.addEventListener('click', ()=>{
+   prevButton.addEventListener('click', ()=>{
         console.log('prevButton');
         if(counter <= 0){
             console.log('first image');
             counter = slidersImg.length - 1
             console.log(counter);
             carouselSliders.style.transform = 'translateX(' + (-size * counter) + 'px)'
-            return
         } 
         counter--
         carouselSliders.style.transform = 'translateX(' + (-size * counter) + 'px)' 
