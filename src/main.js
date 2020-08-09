@@ -16,6 +16,13 @@ function SliderJS(sliderID, arguments){
     }
     prevButton.addEventListener('click', ()=>{
         console.log('prevButton');
+        if(counter <= 0){
+            console.log('first image');
+            counter = slidersImg.length - 1
+            console.log(counter);
+            carouselSliders.style.transform = 'translateX(' + (-size * counter) + 'px)'
+            return
+        } 
         counter--
         carouselSliders.style.transform = 'translateX(' + (-size * counter) + 'px)' 
         
@@ -27,6 +34,13 @@ function SliderJS(sliderID, arguments){
     })
     nextButton.addEventListener('click', ()=>{
         console.log('nextButton');
+        if(counter >= slidersImg.length - 1){
+            console.log('last image');
+            counter = 0
+            console.log(counter);
+            carouselSliders.style.transform = 'translateX(' + (-size * counter) + 'px)'
+            return
+        }
         counter++
         carouselSliders.style.transform = 'translateX(' + (-size * counter) + 'px)'
     })
