@@ -23,14 +23,14 @@ function SliderJS(sliderID, arguments){
     }
     function getLeftSlide(){
         if(counter === 0){
-            return sliderID.length - 1
+            return slidersImg.length - 1
         }
         else {
             return counter - 1
         }
     }
     function getRightSlide(){
-        if(counter === sliderID.length - 1){
+        if(counter === slidersImg.length - 1){
             return 0
         }
         else {
@@ -38,7 +38,7 @@ function SliderJS(sliderID, arguments){
         }
     }
     carouselSliders.style.overflow = 'hidden'
-    console.log(sliderID.length - 1)
+    console.log(slidersImg.length - 1)
     console.log('current: ', getCurrentSlide())
     console.log('prev: ', getLeftSlide())
     console.log('next: ', getRightSlide())
