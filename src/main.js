@@ -32,10 +32,12 @@ function SliderJS(sliderID, arguments){
     function getLeftSlide(n){
         slidersImg[n].style.display = 'block'
         slidersImg[n].style.left = '-800px'
+        return slidersImg[n]
     }
     function getRightSlide(n){
         slidersImg[n].style.display = 'block'
         slidersImg[n].style.left = '800px'
+        return slidersImg[n]
     }
     carouselSliders.style.overflow = 'hidden'
     
