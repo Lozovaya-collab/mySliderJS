@@ -10,7 +10,7 @@ body{
     width: 800px;
     margin: auto;
     height: 500px;
-
+    position: relative;
 }
 
 #sliders{
@@ -18,7 +18,7 @@ body{
     width: 800px;
     position: relative;
     height: 500px;
-    overflow: hidden;
 }
+
 
 
