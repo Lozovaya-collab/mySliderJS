@@ -14,14 +14,17 @@ function SliderJS(sliderID, arguments){
     let size = slidersImg[0].clientWidth
     let obj = arguments
     let counter = 0
-    
-    
-    function getCurrentSlide(){
+    slidersImg[getCurrentSlideIndex()].style.display = "block"
+    function otherSlidesNone(){
+        for(let i = 0; i< slidersImg.length; i++){
+            slidersImg[i].style.display = 'none'
+        }    
+    }
+    function getCurrentSlideIndex(){
         console.log('block');
         return counter
-        
     }
-    function getLeftSlide(){
+    function getLeftSlideIndex(){
         if(counter === 0){
             return slidersImg.length - 1
         }
@@ -29,7 +32,7 @@ function SliderJS(sliderID, arguments){
             return counter - 1
         }
     }
-    function getRightSlide(){
+    function getRightSlideIndex(){
         if(counter === slidersImg.length - 1){
             return 0
         }
@@ -38,10 +41,6 @@ function SliderJS(sliderID, arguments){
         }
     }
     carouselSliders.style.overflow = 'hidden'
-    console.log(slidersImg.length - 1)
-    console.log('current: ', getCurrentSlide())
-    console.log('prev: ', getLeftSlide())
-    console.log('next: ', getRightSlide())
 
     if (obj.hideControls === false) {
         prevButton.style.display = 'none'
@@ -52,21 +51,31 @@ function SliderJS(sliderID, arguments){
     prevButton.addEventListener('click', ()=>{
         console.log('prevButton');
         if(counter <= 0){
-            console.log('here');
-            slidersImg[counter].style.display = 'none'
+            slidersImg[getLeftSlideIndex()].style.display = "block"
             counter = slidersImg.length - 1
-            slidersImg[counter].style.display = 'block'
-            console.log('current: ', getCurrentSlide())
-            console.log('prev: ', getLeftSlide())
-            console.log('next: ', getRightSlide())
+            otherSlidesNone()
+            console.log(counter);
+            slidersImg[getCurrentSlideIndex()].style.display = "block"
+            slidersImg[getLeftSlideIndex()].style.left = "-800px"
+            slidersImg[getCurrentSlideIndex()].style.left = "0"
+            slidersImg[getRightSlideIndex()].style.display = "800px"
+            console.log('current: ', getCurrentSlideIndex())
+            console.log('prev: ', getLeftSlideIndex())
+            console.log('next: ', getRightSlideIndex())
             return
         } 
-        slidersImg[counter].style.display = 'none'
+        otherSlidesNone() 
+        slidersImg[getCurrentSlideIndex()].style.left = "0"
+        slidersImg[getLeftSlideIndex()].style.left = "-800px"
+        slidersImg[getRightSlideIndex()].style.left = "800px"
+        slidersImg[getLeftSlideIndex()].style.display = "block"
         counter--
-        slidersImg[counter].style.display = 'block'
-        console.log('current: ', getCurrentSlide())
-        console.log('prev: ', getLeftSlide())
-        console.log('next: ', getRightSlide())
+        slidersImg[getLeftSlideIndex()].style.left = "-800px"
+        slidersImg[getCurrentSlideIndex()].style.left = "0"
+        slidersImg[getRightSlideIndex()].style.left = "800px"
+        console.log('current: ', getCurrentSlideIndex())
+        console.log('prev: ', getLeftSlideIndex())
+        console.log('next: ', getRightSlideIndex())
         
     })
     playButton.addEventListener('click', ()=>{
@@ -76,19 +85,30 @@ function SliderJS(sliderID, arguments){
     nextButton.addEventListener('click', ()=>{
         console.log('nextButton');
         if(counter >= slidersImg.length - 1){
-            slidersImg[counter].style.display = 'none'
             counter = 0
-            slidersImg[counter].style.display = 'block'
-            console.log('current: ', getCurrentSlide())
-            console.log('prev: ', getLeftSlide())
-            console.log('next: ', getRightSlide())
+            otherSlidesNone()
+            console.log(counter);
+            slidersImg[getCurrentSlideIndex()].style.display = "block"
+            slidersImg[getLeftSlideIndex()].style.left = "-800px"
+            slidersImg[getCurrentSlideIndex()].style.left = "0"
+            slidersImg[getRightSlideIndex()].style.display = "800px"
+            console.log('current: ', getCurrentSlideIndex())
+            console.log('prev: ', getLeftSlideIndex())
+            console.log('next: ', getRightSlideIndex())
             return
         }
-        slidersImg[counter].style.display = 'none'
+        otherSlidesNone() 
+        slidersImg[getCurrentSlideIndex()].style.left = "0"
+        slidersImg[getLeftSlideIndex()].style.left = "-800px"
+        slidersImg[getRightSlideIndex()].style.left = "800px"
+        slidersImg[getRightSlideIndex()].style.display = "block"
+        slidersImg[getRightSlideIndex()].style.transition = "transform 0.5s ease-in-out"
         counter++
-        slidersImg[counter].style.display = 'block'
-        console.log('current: ', getCurrentSlide())
-        console.log('prev: ', getLeftSlide())
-        console.log('next: ', getRightSlide())
+        slidersImg[getLeftSlideIndex()].style.left = "-800px"
+        slidersImg[getCurrentSlideIndex()].style.transform = "translateX(-800px)"
+        slidersImg[getRightSlideIndex()].style.display = "800px"
+        console.log('current: ', getCurrentSlideIndex())
+        console.log('prev: ', getLeftSlideIndex())
+        console.log('next: ', getRightSlideIndex())
     })
 }
