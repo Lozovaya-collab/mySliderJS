@@ -21,7 +21,8 @@ body{
 }
 
 #sliders img{
-    position: relative; 
+    position: absolute;
+    transition: transform 1s ease-in-out; 
 }
 
 
