@@ -14,6 +14,10 @@ function SliderJS(sliderID, arguments){
     let size = slidersImg[0].clientWidth
     let obj = arguments
     let counter = 0
+    let hideButtons = obj.hideControls
+    let autoplayInterval = obj.autoplayInterval
+    let slideInterval = setInterval(nextSlide, autoplayInterval)
+    let playing = obj.playing
 
     function hideAll(){
         for(let i = 0; i< slidersImg.length; i++){
@@ -59,7 +63,7 @@ function SliderJS(sliderID, arguments){
 
     carouselSliders.style.overflow = 'hidden'
 
-    if (obj.hideControls === false) {
+    if (hideButtons === false) {
         prevButton.style.display = 'none'
         nextButton.style.display = 'none'
         playButton.style.display = 'none'
@@ -91,14 +95,46 @@ function SliderJS(sliderID, arguments){
 
         slidersImg[getLeftSlideIndex()].style.left = "-800px"
         slidersImg[getLeftSlideIndex()].style.display = "block"
+
+        if (playing){
+            clearInterval(slideInterval)
+            slideInterval = setInterval(nextSlide, autoplayInterval)
+        }
     })
 
     playButton.addEventListener('click', ()=>{
         console.log('playButton');
+        console.log(playing);
+        if(playing){
+            console.log('pause')
+            pauseShow()
+        }
+        else{
+            playShow()
+        }
     })
 
+    function pauseShow() {
+        playButton.innerHTML = "&#9658;"
+        playing = false;
+        clearInterval(slideInterval);
+    }
+     
+    function playShow() {
+        playButton.innerHTML = "||"
+        playing = true;
+        slideInterval = setInterval(nextSlide,autoplayInterval);
+    }
     nextButton.addEventListener('click', ()=>{
         console.log('nextButton');
+        nextSlide()
+        if (playing){
+            clearInterval(slideInterval)
+            slideInterval = setInterval(nextSlide,autoplayInterval)
+        }
+    })
+
+    function nextSlide(){
         showSlides()
         prevButton.disabled = true
         nextButton.disabled = true
@@ -123,7 +159,7 @@ function SliderJS(sliderID, arguments){
 
         slidersImg[getRightSlideIndex()].style.left = "800px"
         slidersImg[getRightSlideIndex()].style.display = "block"
-    })
+    }
     carouselSliders.addEventListener("transitionend", () => {
         nextButton.disabled = false
         prevButton.disabled = false
