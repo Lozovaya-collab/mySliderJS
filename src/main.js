@@ -60,15 +60,19 @@ function SliderJS(sliderID, arguments){
 
     
     function addControls(){
-        prevButton = document.createElement("button");
-        prevButton.innerText = '<';
-        document.body.appendChild(prevButton);
-        playButton = document.createElement("button");
-        playButton.innerText = '||';
-        document.body.appendChild(playButton);
-        nextButton = document.createElement("button");
-        nextButton.innerText = '>';
+
+        prevButton = document.createElement("button")
+        prevButton.innerText = '<'
+        document.body.appendChild(prevButton)
+
+        playButton = document.createElement("button")
+        playButton.innerText = '||'
+        document.body.appendChild(playButton)
+
+        nextButton = document.createElement("button")
+        nextButton.innerText = '>'
         document.body.appendChild(nextButton);
+        
         if (hideButtons === false) {
             prevButton.style.display = 'none'
             nextButton.style.display = 'none'
@@ -103,19 +107,7 @@ function SliderJS(sliderID, arguments){
     
     prevButton.addEventListener('click', ()=>{
         console.log('prevButton');
-        showSlides()
-
-        prevButton.disabled = true
-        nextButton.disabled = true
-
-        counter.prev()
-
-        slidersImg[counter.getRightSlideIndex()].style.transform = "translateX(800px)"
-
-        slidersImg[counter.getCurrentSlideIndex()].style.transform = "translateX(800px)"
-
-        slidersImg[counter.getLeftSlideIndex()].style.transform = "translateX(800px)"
-        slidersImg[counter.getLeftSlideIndex()].style.display = "none"
+        prevSlide()
 
         if (playing){
             clearInterval(slideInterval)
@@ -155,6 +147,23 @@ function SliderJS(sliderID, arguments){
         }
     })
 
+    function prevSlide(){
+        showSlides()
+
+        prevButton.disabled = true
+        nextButton.disabled = true
+
+        counter.prev()
+
+        slidersImg[counter.getRightSlideIndex()].style.transform = "translateX(800px)"
+
+        slidersImg[counter.getCurrentSlideIndex()].style.transform = "translateX(800px)"
+
+        slidersImg[counter.getLeftSlideIndex()].style.transform = "translateX(800px)"
+        slidersImg[counter.getLeftSlideIndex()].style.display = "none"
+
+    }
+
     function nextSlide(){
         showSlides()
 
@@ -177,4 +186,36 @@ function SliderJS(sliderID, arguments){
         nextButton.disabled = false
         prevButton.disabled = false
     });
+
+    carouselSliders.addEventListener('mousedown', slideEventStart)
+    //carouselSliders.addEventListener('touchstart', slideEventStart)
+
+    carouselSliders.addEventListener('mouseup', slideEventEnd)
+    //carouselSliders.addEventListener('touchend', slideEventEnd)
+
+    function slideEventStart(){
+        let imageLeft = carouselSliders.getBoundingClientRect().left
+        console.log(imageLeft);
+        console.log(event.clientX);
+        positionClick = event.pageX - imageLeft
+    }
+
+    function slideEventEnd(){
+        console.log('end');
+        if(positionClick >= 400)
+        {
+            nextSlide()
+            if (playing){
+                clearInterval(slideInterval)
+                slideInterval = setInterval(nextSlide,autoplayInterval)
+            }
+        }else{
+            prevSlide()
+            if (playing){
+                clearInterval(slideInterval)
+                slideInterval = setInterval(nextSlide,autoplayInterval)
+            }
+        }
+    }
+    
 }
