@@ -18,11 +18,12 @@ body{
     width: 800px;
     position: relative;
     height: 500px;
+    overflow: hidden;
 }
 
 #sliders img{
     position: absolute;
-    transition: transform 0.6s ease-in-out; 
+    transition: all 0.3s ease-in-out; 
 }
 
 

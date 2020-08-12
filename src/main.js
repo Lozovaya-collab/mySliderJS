@@ -1,100 +1,121 @@
 function SliderJS(sliderID, arguments){
     console.log('function');
-    let prevButton = document.createElement("button");
-    prevButton.innerText = '<';
-    document.body.appendChild(prevButton);
-    let playButton = document.createElement("button");
-    playButton.innerText = '||';
-    document.body.appendChild(playButton);
-    let nextButton = document.createElement("button");
-    nextButton.innerText = '>';
-    document.body.appendChild(nextButton);
     let carouselSliders = document.querySelector(sliderID)
     let slidersImg = document.querySelectorAll(sliderID +' img')
     let size = slidersImg[0].clientWidth
+
     let obj = arguments
-    let counter = 0
     let hideButtons = obj.hideControls
     let autoplayInterval = obj.autoplayInterval
-    let slideInterval = setInterval(nextSlide, autoplayInterval)
     let playing = obj.playing
 
+    let prevButton 
+    let playButton
+    let nextButton
+    addControls()
+
+    let slideInterval = setInterval(nextSlide, autoplayInterval)
+
+    let counter = {
+        value: 0,
+        prev(){
+            if (counter.value === 0){
+                counter.value = slidersImg.length - 1
+                return counter.value
+            }else{
+                counter.value = counter.value - 1
+            } 
+            return counter.value
+        },
+        getCurrentSlideIndex(){
+            return counter.value
+        },
+        next(){
+            if (counter.value === slidersImg.length - 1){
+                counter.value = 0
+            }
+            else{
+                counter.value = counter.value + 1
+            } 
+            return counter.value
+        },
+        getRightSlideIndex(){
+            let currentValue = counter.value
+            let nextValue = counter.value + 1
+            if(currentValue === slidersImg.length - 1){
+                nextValue = 0
+            }
+            return nextValue
+        },
+        getLeftSlideIndex(){
+            let currentValue = counter.value
+            let prevValue = counter.value - 1
+            if(currentValue === 0){
+                prevValue = slidersImg.length - 1
+            }
+            return prevValue
+        }
+        
+    }
+
+    
+    function addControls(){
+        prevButton = document.createElement("button");
+        prevButton.innerText = '<';
+        document.body.appendChild(prevButton);
+        playButton = document.createElement("button");
+        playButton.innerText = '||';
+        document.body.appendChild(playButton);
+        nextButton = document.createElement("button");
+        nextButton.innerText = '>';
+        document.body.appendChild(nextButton);
+        if (hideButtons === false) {
+            prevButton.style.display = 'none'
+            nextButton.style.display = 'none'
+            playButton.style.display = 'none'
+        }
+        
+    }
+    
     function hideAll(){
-        for(let i = 0; i< slidersImg.length; i++){
-            slidersImg[i].style.display = 'none'
+        for(let index = 0; index< slidersImg.length; index++){
+            slidersImg[index].style.display = 'none'
         }    
     }
 
     function showSlides(){
         hideAll()
 
-        slidersImg[getCurrentSlideIndex()].style.left = "0"
-        slidersImg[getCurrentSlideIndex()].style.display = "block"
-        slidersImg[getCurrentSlideIndex()].style.transform = "none"
+        slidersImg[counter.getCurrentSlideIndex()].style.left = "0"
+        slidersImg[counter.getCurrentSlideIndex()].style.display = "block"
+        slidersImg[counter.getCurrentSlideIndex()].style.transform = "none"
 
-        slidersImg[getLeftSlideIndex()].style.left = "-800px"
-        slidersImg[getLeftSlideIndex()].style.display = "block"
-        slidersImg[getLeftSlideIndex()].style.transform = "none"
+        slidersImg[counter.getLeftSlideIndex()].style.left = "-800px"
+        slidersImg[counter.getLeftSlideIndex()].style.display = "block"
+        slidersImg[counter.getLeftSlideIndex()].style.transform = "none"
 
-        slidersImg[getRightSlideIndex()].style.left = "800px"
-        slidersImg[getRightSlideIndex()].style.display = "block"
-        slidersImg[getRightSlideIndex()].style.transform = "none"
+        slidersImg[counter.getRightSlideIndex()].style.left = "800px"
+        slidersImg[counter.getRightSlideIndex()].style.display = "block"
+        slidersImg[counter.getRightSlideIndex()].style.transform = "none"
     }
+
     showSlides()
-    function getCurrentSlideIndex(){
-        return counter
-    }
-    function getLeftSlideIndex(){
-        if(counter === 0){
-            return slidersImg.length - 1
-        }
-        else {
-            return counter - 1
-        }
-    }
-    function getRightSlideIndex(){
-        if(counter === slidersImg.length - 1){
-            return 0
-        }
-        else {
-            return counter + 1
-        }
-    }
-
-    carouselSliders.style.overflow = 'hidden'
-
-    if (hideButtons === false) {
-        prevButton.style.display = 'none'
-        nextButton.style.display = 'none'
-        playButton.style.display = 'none'
-    }
     
     prevButton.addEventListener('click', ()=>{
         console.log('prevButton');
         showSlides()
+
         prevButton.disabled = true
         nextButton.disabled = true
-        if(counter <= 0){
-            counter = slidersImg.length - 1
 
-            slidersImg[getLeftSlideIndex()].style.left = "-800px"
-            slidersImg[getLeftSlideIndex()].style.display = "block"
+        counter.prev()
 
-            slidersImg[getCurrentSlideIndex()].style.transform = "translateX(800px)"
+        slidersImg[counter.getRightSlideIndex()].style.transform = "translateX(800px)"
 
-            slidersImg[getRightSlideIndex()].style.left = "800px"
-            slidersImg[getRightSlideIndex()].style.display = "none"
-            return
-        } 
-        counter--
+        slidersImg[counter.getCurrentSlideIndex()].style.transform = "translateX(800px)"
 
-        slidersImg[getRightSlideIndex()].style.left = "800px"
-        slidersImg[getRightSlideIndex()].style.display = "none"
-
-        slidersImg[getCurrentSlideIndex()].style.transform = "translateX(800px)"
-
-        slidersImg[getLeftSlideIndex()].style.left = "-800px"
-        slidersImg[getLeftSlideIndex()].style.display = "block"
+        slidersImg[counter.getLeftSlideIndex()].style.transform = "translateX(800px)"
+        slidersImg[counter.getLeftSlideIndex()].style.display = "none"
 
         if (playing){
             clearInterval(slideInterval)
@@ -136,30 +157,22 @@ function SliderJS(sliderID, arguments){
 
     function nextSlide(){
         showSlides()
+
         prevButton.disabled = true
         nextButton.disabled = true
-        if(counter >= slidersImg.length - 1){
-            counter = 0
-            
-            slidersImg[getLeftSlideIndex()].style.left = "-800px"
-            slidersImg[getLeftSlideIndex()].style.display = "none"
+        
+        counter.next()
+        
+        slidersImg[counter.getLeftSlideIndex()].style.transform = "translateX(-800px)"
 
-            slidersImg[getCurrentSlideIndex()].style.transform = "translateX(-800px)"
+        slidersImg[counter.getCurrentSlideIndex()].style.transform = "translateX(-800px)"
 
-            slidersImg[getRightSlideIndex()].style.left = "800px"
-            slidersImg[getRightSlideIndex()].style.display = "block"
-            return
-        }
-        counter++
+        slidersImg[counter.getRightSlideIndex()].style.transform = "translateX(-800px)"
+        slidersImg[counter.getRightSlideIndex()].style.display = "none"
 
-        slidersImg[getLeftSlideIndex()].style.left = "-800px"
-        slidersImg[getLeftSlideIndex()].style.display = "none"
-
-        slidersImg[getCurrentSlideIndex()].style.transform = "translateX(-800px)"
-
-        slidersImg[getRightSlideIndex()].style.left = "800px"
-        slidersImg[getRightSlideIndex()].style.display = "block"
+        
     }
+    
     carouselSliders.addEventListener("transitionend", () => {
         nextButton.disabled = false
         prevButton.disabled = false
