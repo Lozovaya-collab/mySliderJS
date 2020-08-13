@@ -19,46 +19,46 @@ function SliderJS(sliderID, arguments){
     let counter = {
         value: 0,
         prev(){
-            if (counter.value === 0){
-                counter.value = slidersImg.length - 1
-                return counter.value
-            }else{
-                counter.value = counter.value - 1
-            } 
-            return counter.value
-        },
-        getCurrentSlideIndex(){
-            return counter.value
+
+            this.value = this.getLeftSlideIndex()
+            return this.value
+
         },
         next(){
-            if (counter.value === slidersImg.length - 1){
-                counter.value = 0
-            }
-            else{
-                counter.value = counter.value + 1
-            } 
-            return counter.value
-        },
-        getRightSlideIndex(){
-            let currentValue = counter.value
-            let nextValue = counter.value + 1
-            if(currentValue === slidersImg.length - 1){
-                nextValue = 0
-            }
-            return nextValue
+
+            this.value = this.getRightSlideIndex()
+            return this.value
+
         },
         getLeftSlideIndex(){
-            let currentValue = counter.value
-            let prevValue = counter.value - 1
+
+            let currentValue = this.value
+            let prevValue = this.value - 1
+
             if(currentValue === 0){
                 prevValue = slidersImg.length - 1
             }
+
             return prevValue
-        }
-        
+        },
+        getCurrentSlideIndex(){
+
+            return this.value
+
+        },
+        getRightSlideIndex(){
+
+            let currentValue = this.value
+            let nextValue = this.value + 1
+
+            if(currentValue === slidersImg.length - 1){
+                nextValue = 0
+            }
+
+            return nextValue
+        }    
     }
 
-    
     function addControls(){
 
         prevButton = document.createElement("button")
@@ -82,31 +82,35 @@ function SliderJS(sliderID, arguments){
     }
     
     function hideAll(){
+
         for(let index = 0; index< slidersImg.length; index++){
             slidersImg[index].style.display = 'none'
         }    
+
     }
 
-    function showSlides(){
+    function prepareSlides(){
+
         hideAll()
 
-        slidersImg[counter.getCurrentSlideIndex()].style.left = "0"
-        slidersImg[counter.getCurrentSlideIndex()].style.display = "block"
-        slidersImg[counter.getCurrentSlideIndex()].style.transform = "none"
-
-        slidersImg[counter.getLeftSlideIndex()].style.left = "-800px"
+        slidersImg[counter.getLeftSlideIndex()].style.transform = "translateX(-800px)"
         slidersImg[counter.getLeftSlideIndex()].style.display = "block"
-        slidersImg[counter.getLeftSlideIndex()].style.transform = "none"
+        slidersImg[counter.getLeftSlideIndex()].style.zIndex = "0"
 
-        slidersImg[counter.getRightSlideIndex()].style.left = "800px"
+        slidersImg[counter.getCurrentSlideIndex()].style.transform = "translateX(0)"
+        slidersImg[counter.getCurrentSlideIndex()].style.display = "block"
+        slidersImg[counter.getCurrentSlideIndex()].style.zIndex = "1"
+
+        slidersImg[counter.getRightSlideIndex()].style.transform = "translateX(800px)"
         slidersImg[counter.getRightSlideIndex()].style.display = "block"
-        slidersImg[counter.getRightSlideIndex()].style.transform = "none"
+        slidersImg[counter.getRightSlideIndex()].style.zIndex = "0"
+
     }
 
-    showSlides()
+    prepareSlides()
     
     prevButton.addEventListener('click', ()=>{
-        console.log('prevButton');
+
         prevSlide()
 
         if (playing){
@@ -116,7 +120,7 @@ function SliderJS(sliderID, arguments){
     })
 
     playButton.addEventListener('click', ()=>{
-        console.log('playButton');
+        
         console.log(playing);
         if(playing){
             console.log('pause')
@@ -125,83 +129,122 @@ function SliderJS(sliderID, arguments){
         else{
             playShow()
         }
+
     })
 
-    function pauseShow() {
-        playButton.innerHTML = "&#9658;"
-        playing = false;
-        clearInterval(slideInterval);
-    }
-     
-    function playShow() {
-        playButton.innerHTML = "||"
-        playing = true;
-        slideInterval = setInterval(nextSlide,autoplayInterval);
-    }
     nextButton.addEventListener('click', ()=>{
-        console.log('nextButton');
+        
         nextSlide()
+
         if (playing){
             clearInterval(slideInterval)
             slideInterval = setInterval(nextSlide,autoplayInterval)
         }
+
     })
 
+    function pauseShow(){
+
+        playButton.innerHTML = "&#9658;"
+        playing = false;
+        clearInterval(slideInterval)
+
+    }
+     
+    function playShow() {
+
+        playButton.innerHTML = "||"
+        playing = true
+        slideInterval = setInterval(nextSlide,autoplayInterval)
+
+    }
+
     function prevSlide(){
-        showSlides()
+
+        prepareSlides()
 
         prevButton.disabled = true
         nextButton.disabled = true
+             
+        slidersImg[counter.getLeftSlideIndex()].style.zIndex = "1"
+        slidersImg[counter.getLeftSlideIndex()].style.transform = "translateX(0)"
+        slidersImg[counter.getLeftSlideIndex()].style.display = "block"
 
-        counter.prev()
-
-        slidersImg[counter.getRightSlideIndex()].style.transform = "translateX(800px)"
-
+        slidersImg[counter.getCurrentSlideIndex()].style.zIndex = "0"
+        slidersImg[counter.getCurrentSlideIndex()].style.display = "block"
         slidersImg[counter.getCurrentSlideIndex()].style.transform = "translateX(800px)"
 
-        slidersImg[counter.getLeftSlideIndex()].style.transform = "translateX(800px)"
-        slidersImg[counter.getLeftSlideIndex()].style.display = "none"
+        slidersImg[counter.getRightSlideIndex()].style.zIndex = "0"
+        slidersImg[counter.getRightSlideIndex()].style.display = "none"
+        slidersImg[counter.getRightSlideIndex()].style.transform = ""
+        
+        counter.prev()
+        
+        slidersImg[counter.getLeftSlideIndex()].style.zIndex = "0"
+        slidersImg[counter.getLeftSlideIndex()].style.display = "block"
+        slidersImg[counter.getLeftSlideIndex()].style.transform = "translateX(-800px)"
 
     }
 
     function nextSlide(){
-        showSlides()
+
+        prepareSlides()
 
         prevButton.disabled = true
         nextButton.disabled = true
+             
+        slidersImg[counter.getLeftSlideIndex()].style.zIndex = "0"
+        slidersImg[counter.getLeftSlideIndex()].style.transform = ""
+        slidersImg[counter.getLeftSlideIndex()].style.display = "none"
+
+        slidersImg[counter.getCurrentSlideIndex()].style.zIndex = "0"
+        slidersImg[counter.getCurrentSlideIndex()].style.display = "block"
+        slidersImg[counter.getCurrentSlideIndex()].style.transform = "translateX(-800px)"
+
+        slidersImg[counter.getRightSlideIndex()].style.zIndex = "1"
+        slidersImg[counter.getRightSlideIndex()].style.display = "block"
+        slidersImg[counter.getRightSlideIndex()].style.transform = "translateX(0)"
         
         counter.next()
         
-        slidersImg[counter.getLeftSlideIndex()].style.transform = "translateX(-800px)"
+        slidersImg[counter.getRightSlideIndex()].style.zIndex = "0"
+        slidersImg[counter.getRightSlideIndex()].style.display = "block"
+        slidersImg[counter.getRightSlideIndex()].style.transform = "translateX(800px)"      
 
-        slidersImg[counter.getCurrentSlideIndex()].style.transform = "translateX(-800px)"
-
-        slidersImg[counter.getRightSlideIndex()].style.transform = "translateX(-800px)"
-        slidersImg[counter.getRightSlideIndex()].style.display = "none"
-
-        
     }
     
     carouselSliders.addEventListener("transitionend", () => {
+
         nextButton.disabled = false
         prevButton.disabled = false
+
     });
 
-    carouselSliders.addEventListener('mousedown', slideEventStart)
-    //carouselSliders.addEventListener('touchstart', slideEventStart)
+    carouselSliders.addEventListener('mousedown', slideMouseEventStart)
+    carouselSliders.addEventListener('touchstart', slideTouchEventStart)
 
     carouselSliders.addEventListener('mouseup', slideEventEnd)
-    //carouselSliders.addEventListener('touchend', slideEventEnd)
+    carouselSliders.addEventListener('touchend', slideEventEnd)
 
-    function slideEventStart(){
+    function slideMouseEventStart(event){
+
+        event.preventDefault()
         let imageLeft = carouselSliders.getBoundingClientRect().left
-        console.log(imageLeft);
-        console.log(event.clientX);
+        
         positionClick = event.pageX - imageLeft
+
+    }
+
+    function slideTouchEventStart(event){
+
+        let imageLeft = carouselSliders.getBoundingClientRect().left
+        
+        positionClick = event.changedTouches[0].pageX - imageLeft
+
     }
 
     function slideEventEnd(){
-        console.log('end');
+        
         if(positionClick >= 400)
         {
             nextSlide()
