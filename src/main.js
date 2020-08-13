@@ -1,18 +1,11 @@
-function SliderJS(sliderID, arguments){
-    console.log('function');
+function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
+    
     let carouselSliders = document.querySelector(sliderID)
     let slidersImg = document.querySelectorAll(sliderID +' img')
-    let size = slidersImg[0].clientWidth
-
-    let obj = arguments
-    let hideButtons = obj.hideControls
-    let autoplayInterval = obj.autoplayInterval
-    let playing = obj.playing
 
     let prevButton 
     let playButton
     let nextButton
-    addControls()
 
     let slideInterval = setInterval(nextSlide, autoplayInterval)
 
@@ -32,14 +25,14 @@ function SliderJS(sliderID, arguments){
         },
         getLeftSlideIndex(){
 
-            let currentValue = this.value
-            let prevValue = this.value - 1
+            let current = this.value
+            let prev = this.value - 1
 
-            if(currentValue === 0){
-                prevValue = slidersImg.length - 1
+            if(current === 0){
+                prev = slidersImg.length - 1
             }
 
-            return prevValue
+            return prev
         },
         getCurrentSlideIndex(){
 
@@ -48,14 +41,14 @@ function SliderJS(sliderID, arguments){
         },
         getRightSlideIndex(){
 
-            let currentValue = this.value
-            let nextValue = this.value + 1
+            let current = this.value
+            let next = this.value + 1
 
-            if(currentValue === slidersImg.length - 1){
-                nextValue = 0
+            if(current === slidersImg.length - 1){
+                next = 0
             }
 
-            return nextValue
+            return next
         }    
     }
 
@@ -73,7 +66,7 @@ function SliderJS(sliderID, arguments){
         nextButton.innerText = '>'
         document.body.appendChild(nextButton);
         
-        if (hideButtons === false) {
+        if (hideControls === false) {
             prevButton.style.display = 'none'
             nextButton.style.display = 'none'
             playButton.style.display = 'none'
@@ -106,42 +99,6 @@ function SliderJS(sliderID, arguments){
         slidersImg[counter.getRightSlideIndex()].style.zIndex = "0"
 
     }
-
-    prepareSlides()
-    
-    prevButton.addEventListener('click', ()=>{
-
-        prevSlide()
-
-        if (playing){
-            clearInterval(slideInterval)
-            slideInterval = setInterval(nextSlide, autoplayInterval)
-        }
-    })
-
-    playButton.addEventListener('click', ()=>{
-        
-        console.log(playing);
-        if(playing){
-            console.log('pause')
-            pauseShow()
-        }
-        else{
-            playShow()
-        }
-
-    })
-
-    nextButton.addEventListener('click', ()=>{
-        
-        nextSlide()
-
-        if (playing){
-            clearInterval(slideInterval)
-            slideInterval = setInterval(nextSlide,autoplayInterval)
-        }
-
-    })
 
     function pauseShow(){
 
@@ -212,19 +169,6 @@ function SliderJS(sliderID, arguments){
         slidersImg[counter.getRightSlideIndex()].style.transform = "translateX(800px)"      
 
     }
-    
-    carouselSliders.addEventListener("transitionend", () => {
-
-        nextButton.disabled = false
-        prevButton.disabled = false
-
-    });
-
-    carouselSliders.addEventListener('mousedown', slideMouseEventStart)
-    carouselSliders.addEventListener('touchstart', slideTouchEventStart)
-
-    carouselSliders.addEventListener('mouseup', slideEventEnd)
-    carouselSliders.addEventListener('touchend', slideEventEnd)
 
     function slideMouseEventStart(event){
 
@@ -261,4 +205,75 @@ function SliderJS(sliderID, arguments){
         }
     }
     
+    if(slidersImg.length === 1){
+
+        playing = false
+        hideControls = false
+        clearInterval(slideInterval)
+
+        slidersImg[counter.getCurrentSlideIndex()].style.transform = "translateX(0)"
+        slidersImg[counter.getCurrentSlideIndex()].style.display = "block"
+
+    } else if(slidersImg.length === 0){
+
+        playing = false
+        hideControls = false
+        clearInterval(slideInterval)
+
+        console.log(" картинок нет");
+    }else{
+
+    prepareSlides()
+
+    addControls()
+    
+    prevButton.addEventListener('click', ()=>{
+
+        prevSlide()
+
+        if (playing){
+            clearInterval(slideInterval)
+            slideInterval = setInterval(nextSlide, autoplayInterval)
+        }
+    })
+
+    playButton.addEventListener('click', ()=>{
+        
+        console.log(playing);
+        if(playing){
+            console.log('pause')
+            pauseShow()
+        }
+        else{
+            playShow()
+        }
+
+    })
+
+    nextButton.addEventListener('click', ()=>{
+        
+        nextSlide()
+
+        if (playing){
+            clearInterval(slideInterval)
+            slideInterval = setInterval(nextSlide,autoplayInterval)
+        }
+
+    })
+   
+    carouselSliders.addEventListener("transitionend", () => {
+
+        nextButton.disabled = false
+        prevButton.disabled = false
+
+    });
+
+    carouselSliders.addEventListener('mousedown', slideMouseEventStart)
+    carouselSliders.addEventListener('touchstart', slideTouchEventStart)
+
+    carouselSliders.addEventListener('mouseup', slideEventEnd)
+    carouselSliders.addEventListener('touchend', slideEventEnd)
+
+    
+    } 
 }
