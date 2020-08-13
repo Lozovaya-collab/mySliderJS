@@ -4,24 +4,24 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 body{
-    
     width: 800px;
     margin: auto;
-    height: 500px;
-    position: relative;
 }
-
-#sliders{
+div{
     display: flex;
+    margin: auto;
     width: 800px;
     position: relative;
     height: 500px;
     overflow: hidden;
 }
 
-#sliders img{
+button{
+    display: contents;
+    position: relative;
+}
+img{
     position: absolute;
     transition: all 0.3s ease-in-out; 
 }

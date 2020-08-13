@@ -1,7 +1,7 @@
 function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
     
-    let carouselSliders = document.querySelector(sliderID)
-    let slidersImg = document.querySelectorAll(sliderID +' img')
+    const carouselSliders = document.getElementById(sliderID)
+     slidersImg = carouselSliders.children
 
     let prevButton 
     let playButton
@@ -25,14 +25,7 @@ function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
         },
         getLeftSlideIndex(){
 
-            let current = this.value
-            let prev = this.value - 1
-
-            if(current === 0){
-                prev = slidersImg.length - 1
-            }
-
-            return prev
+            return this.value === 0 ? slidersImg.length - 1 : this.value - 1
         },
         getCurrentSlideIndex(){
 
@@ -41,32 +34,25 @@ function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
         },
         getRightSlideIndex(){
 
-            let current = this.value
-            let next = this.value + 1
-
-            if(current === slidersImg.length - 1){
-                next = 0
-            }
-
-            return next
+            return this.value === slidersImg.length - 1 ? 0 : this.value + 1
         }    
     }
 
     function addControls(){
 
-        prevButton = document.createElement("button")
-        prevButton.innerText = '<'
-        document.body.appendChild(prevButton)
+        nextButton = document.createElement("button")
+        nextButton.innerText = '>'
+        carouselSliders.after(nextButton)
 
         playButton = document.createElement("button")
         playButton.innerText = '||'
-        document.body.appendChild(playButton)
+        carouselSliders.after(playButton)
 
-        nextButton = document.createElement("button")
-        nextButton.innerText = '>'
-        document.body.appendChild(nextButton);
+        prevButton = document.createElement("button")
+        prevButton.innerText = '<'
+        carouselSliders.after(prevButton)
         
-        if (hideControls === false) {
+        if (hideControls === true) {
             prevButton.style.display = 'none'
             nextButton.style.display = 'none'
             playButton.style.display = 'none'
@@ -173,7 +159,7 @@ function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
     function slideMouseEventStart(event){
 
         event.preventDefault()
-        let imageLeft = carouselSliders.getBoundingClientRect().left
+        const imageLeft = slidersImg[counter.getCurrentSlideIndex()].getBoundingClientRect().left
         
         positionClick = event.pageX - imageLeft
 
@@ -181,15 +167,15 @@ function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
 
     function slideTouchEventStart(event){
 
-        let imageLeft = carouselSliders.getBoundingClientRect().left
+        const imageLeft = carouselSliders.getBoundingClientRect().left
         
         positionClick = event.changedTouches[0].pageX - imageLeft
 
     }
 
     function slideEventEnd(){
-        
-        if(positionClick >= 400)
+        let size = slidersImg[counter.getCurrentSlideIndex()].clientWidth
+        if(positionClick >= size / 2)
         {
             nextSlide()
             if (playing){
