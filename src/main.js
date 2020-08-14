@@ -51,18 +51,37 @@ function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
     }
 
     function addControls(){
-
-        nextButton = document.createElement("button")
-        nextButton.innerText = '>'
-        carouselSliders.after(nextButton)
-
-        playButton = document.createElement("button")
-        playButton.innerText = '||'
-        carouselSliders.after(playButton)
+        
+        let divButton = document.createElement("div")
+        carouselSliders.after(divButton)
+        divButton.className = "buttons"
+        divButton.style.margin = "auto"
+        divButton.style.width = "800px"
+        divButton.style.top = "20px"
 
         prevButton = document.createElement("button")
-        prevButton.innerText = '<'
-        carouselSliders.after(prevButton)
+        divButton.append(prevButton)
+        prevButton.style.background = "url('../src/icons/left-arrow.svg') no-repeat"
+        prevButton.style.border = "none"
+        prevButton.style.outline = "none"
+        prevButton.style.width = "40px"
+        prevButton.style.height = "40px"
+
+        playButton = document.createElement("button")
+        divButton.append(playButton)
+        playButton.style.background = "url('../src/icons/pause.svg') no-repeat"
+        playButton.style.border = "none"
+        playButton.style.outline = "none"
+        playButton.style.width = "40px"
+        playButton.style.height = "40px"
+
+        nextButton = document.createElement("button")
+        divButton.append(nextButton)
+        nextButton.style.background = "url('../src/icons/right-arrow.svg') no-repeat"
+        nextButton.style.border = "none"
+        nextButton.style.outline = "none"
+        nextButton.style.width = "40px"
+        nextButton.style.height = "40px"
         
         if (hideControls === true) {
             prevButton.style.display = 'none'
@@ -100,7 +119,7 @@ function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
 
     function pauseShow(){
 
-        playButton.innerHTML = "&#9658;"
+        playButton.style.background = "url('../src/icons/play.svg') no-repeat"
         playing = false;
         clearInterval(slideInterval)
 
@@ -108,7 +127,7 @@ function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
      
     function playShow() {
 
-        playButton.innerHTML = "||"
+        playButton.style.background = "url('../src/icons/pause.svg') no-repeat"
         playing = true
         slideInterval = setInterval(nextSlide,autoplayInterval)
 

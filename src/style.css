@@ -1,24 +1,19 @@
-
-body{
-    width: 800px;
-    margin: auto;
-}
 div{
     display: flex;
-    margin: auto;
     width: 800px;
+    margin: auto;
     position: relative;
     height: 500px;
     overflow: hidden;
 }
 
 button{
-    display: contents;
-    position: relative;
+    
+    position: relative;   
 }
 img{
     position: absolute;
-    transition: all 1s ease-in-out; 
+    transition: all 0.3s ease-in-out; 
 }
 
 
