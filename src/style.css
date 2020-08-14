@@ -1,9 +1,4 @@
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 body{
     width: 800px;
     margin: auto;
@@ -23,7 +18,7 @@ button{
 }
 img{
     position: absolute;
-    transition: all 0.3s ease-in-out; 
+    transition: all 1s ease-in-out; 
 }
 
 

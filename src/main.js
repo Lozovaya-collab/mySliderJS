@@ -1,7 +1,19 @@
 function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
     
+    if(document.getElementById(sliderID).children.length === 2){
+
+        const newSlide1 = document.createElement('img')
+        newSlide1.src = document.getElementById(sliderID).children[0].src
+        document.getElementById(sliderID).appendChild(newSlide1)
+
+        const newSlide2 = document.createElement('img')
+        newSlide2.src = document.getElementById(sliderID).children[1].src
+        document.getElementById(sliderID).appendChild(newSlide2)
+        
+    }
+
     const carouselSliders = document.getElementById(sliderID)
-     slidersImg = carouselSliders.children
+    const slidersImg = carouselSliders.children
 
     let prevButton 
     let playButton
