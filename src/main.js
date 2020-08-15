@@ -15,9 +15,16 @@ function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
     const carouselSliders = document.getElementById(sliderID)
     const slidersImg = carouselSliders.children
 
+    carouselSliders.className = "carousel-slider"
+    
     let prevButton 
     let playButton
     let nextButton
+
+    let positionStartClick
+    let positionEndClick
+    let swipeLeft = false
+    let swipeRight = false
 
     let slideInterval = setInterval(nextSlide, autoplayInterval)
 
@@ -54,34 +61,20 @@ function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
         
         let divButton = document.createElement("div")
         carouselSliders.after(divButton)
-        divButton.className = "buttons"
-        divButton.style.margin = "auto"
-        divButton.style.width = "800px"
-        divButton.style.top = "20px"
+        divButton.className = "slider-buttons"
 
         prevButton = document.createElement("button")
+        prevButton.className = "prev-button"
         divButton.append(prevButton)
-        prevButton.style.background = "url('../src/icons/left-arrow.svg') no-repeat"
-        prevButton.style.border = "none"
-        prevButton.style.outline = "none"
-        prevButton.style.width = "40px"
-        prevButton.style.height = "40px"
 
         playButton = document.createElement("button")
+        playButton.className = "play-button"
         divButton.append(playButton)
-        playButton.style.background = "url('../src/icons/pause.svg') no-repeat"
-        playButton.style.border = "none"
-        playButton.style.outline = "none"
-        playButton.style.width = "40px"
-        playButton.style.height = "40px"
 
         nextButton = document.createElement("button")
+        nextButton.className = "next-button"
         divButton.append(nextButton)
-        nextButton.style.background = "url('../src/icons/right-arrow.svg') no-repeat"
-        nextButton.style.border = "none"
-        nextButton.style.outline = "none"
-        nextButton.style.width = "40px"
-        nextButton.style.height = "40px"
+        
         
         if (hideControls === true) {
             prevButton.style.display = 'none'
@@ -190,36 +183,63 @@ function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
     function slideMouseEventStart(event){
 
         event.preventDefault()
-        const imageLeft = slidersImg[counter.getCurrentSlideIndex()].getBoundingClientRect().left
         
-        positionClick = event.pageX - imageLeft
+        positionStartClick = event.pageX 
 
     }
 
     function slideTouchEventStart(event){
-
-        const imageLeft = carouselSliders.getBoundingClientRect().left
         
-        positionClick = event.changedTouches[0].pageX - imageLeft
+        positionStartClick = event.changedTouches[0].pageX 
 
     }
 
-    function slideEventEnd(){
-        let size = slidersImg[counter.getCurrentSlideIndex()].clientWidth
-        if(positionClick >= size / 2)
-        {
+    function slideMouseEventEnd(event){
+
+        positionEndClick = event.pageX
+        
+        if(positionStartClick > positionEndClick){
+            swipeRight = true
+        } else if(positionStartClick < positionEndClick){
+            swipeLeft = true
+        }
+       
+        swipeAction()
+    }
+
+    function slideTouchEventEnd(event){
+
+        positionEndClick = event.changedTouches[0].pageX
+        
+        if(positionStartClick > positionEndClick){
+            swipeRight = true
+        } else if(positionStartClick < positionEndClick){
+            swipeLeft = true
+        }
+       
+        swipeAction()
+    }
+
+    function swipeAction(){
+
+        if(swipeRight){
+
+            swipeRight = false
             nextSlide()
             if (playing){
                 clearInterval(slideInterval)
                 slideInterval = setInterval(nextSlide,autoplayInterval)
             }
-        }else{
+        }else if(swipeLeft){
+
+            swipeLeft = false
             prevSlide()
             if (playing){
                 clearInterval(slideInterval)
                 slideInterval = setInterval(nextSlide,autoplayInterval)
             }
         }
+
     }
     
     if(slidersImg.length === 1){
@@ -256,9 +276,7 @@ function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
 
     playButton.addEventListener('click', ()=>{
         
-        console.log(playing);
         if(playing){
-            console.log('pause')
             pauseShow()
         }
         else{
@@ -288,8 +306,8 @@ function SliderJS(sliderID, { playing, autoplayInterval, hideControls}){
     carouselSliders.addEventListener('mousedown', slideMouseEventStart)
     carouselSliders.addEventListener('touchstart', slideTouchEventStart)
 
-    carouselSliders.addEventListener('mouseup', slideEventEnd)
-    carouselSliders.addEventListener('touchend', slideEventEnd)
+    carouselSliders.addEventListener('mouseup', slideMouseEventEnd)
+    carouselSliders.addEventListener('touchend', slideTouchEventEnd)
 
     
     } 
