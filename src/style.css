@@ -5,6 +5,7 @@
     position: relative;
     height: 500px;
     overflow: hidden;
+    touch-action: none;
 }
 
 .carousel-slider img{
@@ -16,6 +17,7 @@
     margin: auto;
     width: 800px;
     top: 10px;
+    height: 60px;
     position: relative;   
 }
 
